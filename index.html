@@ -160,6 +160,75 @@
     }
 
     /* ==========================================================================
+       UI ENHANCEMENTS (ORBS, CURSOR, NEON)
+       ========================================================================== */
+    .bg-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(140px);
+      z-index: 0;
+      opacity: 0.3;
+      pointer-events: none;
+      animation: float-orb 20s infinite ease-in-out alternate;
+    }
+    .orb-1 { width: 50vw; height: 50vw; background: radial-gradient(circle, rgba(25,60,150,0.6) 0%, rgba(0,0,0,0) 70%); top: -10%; left: -10%; animation-delay: 0s; }
+    .orb-2 { width: 60vw; height: 60vw; background: radial-gradient(circle, rgba(120,30,180,0.4) 0%, rgba(0,0,0,0) 70%); bottom: 10%; right: -20%; animation-delay: -5s; }
+    .orb-3 { width: 40vw; height: 40vw; background: radial-gradient(circle, rgba(0,255,200,0.3) 0%, rgba(0,0,0,0) 70%); top: 40%; left: 30%; animation-delay: -10s; }
+    
+    @keyframes float-orb {
+      0% { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(5%, 10%) scale(1.1); }
+    }
+
+    /* Custom Cursor */
+    .custom-cursor {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.8);
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.8), 0 0 40px rgba(100, 200, 255, 0.6);
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: width 0.3s, height 0.3s, background 0.3s, box-shadow 0.3s;
+      mix-blend-mode: screen;
+    }
+    .custom-cursor.hovering {
+      width: 60px;
+      height: 60px;
+      background: rgba(255, 255, 255, 0.1);
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.2), 0 0 40px rgba(100, 200, 255, 0.2);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+    }
+    @media (max-width: 768px) { .custom-cursor { display: none; } }
+
+    /* Neon Hovers */
+    .service-card, .process-step, .featured-thumb-container, .side-thumb-container {
+      transition: all 0.4s ease;
+    }
+    
+    /* Light section cards */
+    .section-light .service-card:hover {
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+      transform: translateY(-5px);
+    }
+    
+    /* Dark section cards get glowing cyan/blue neon */
+    .process-step:hover, .featured-thumb-container:hover, .side-thumb-container:hover {
+      box-shadow: 0 10px 40px rgba(0, 150, 255, 0.15), inset 0 0 0 1px rgba(0, 150, 255, 0.4);
+      transform: translateY(-5px);
+    }
+
+    /* Magnetic CTA Button base transition */
+    .cta-btn {
+      transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease, transform 0.1s cubic-bezier(0.2, 0, 0.2, 1);
+    }
+
+    /* ==========================================================================
        NAVBAR
        ========================================================================== */
     header {
@@ -1731,7 +1800,15 @@
 </head>
 <body>
 
-  <!-- 4-COLUMN VERTICAL GRID OVERLAY -->
+  <!-- Ambient Background Orbs -->
+  <div class="bg-orb orb-1"></div>
+  <div class="bg-orb orb-2"></div>
+  <div class="bg-orb orb-3"></div>
+
+  <!-- Custom Cursor -->
+  <div class="custom-cursor" id="custom-cursor"></div>
+
+  <!-- Subtle 4-column vertical grid overlay across the full page -->
   <div class="grid-overlay" aria-hidden="true">
     <div class="grid-col"></div>
     <div class="grid-col"></div>
@@ -3008,6 +3085,54 @@
       });
 
       scrollElements.forEach(el => scrollObserver.observe(el));
+
+      /* ==========================================================================
+         8. CUSTOM CURSOR & MAGNETIC BUTTONS
+         ========================================================================== */
+      const cursor = document.getElementById('custom-cursor');
+      const interactiveEls = document.querySelectorAll('a, button, .service-card, .process-step, .blog-thumb-link');
+      
+      if (cursor && window.innerWidth > 768) {
+        // Mouse move
+        window.addEventListener('mousemove', (e) => {
+          cursor.style.transform = `translate(calc(${e.clientX}px - 50%), calc(${e.clientY}px - 50%))`;
+        });
+
+        // Hover states
+        interactiveEls.forEach(el => {
+          el.addEventListener('mouseenter', () => cursor.classList.add('hovering'));
+          el.addEventListener('mouseleave', () => cursor.classList.remove('hovering'));
+        });
+      }
+
+      // Magnetic Buttons
+      const magneticBtns = document.querySelectorAll('.cta-btn');
+      magneticBtns.forEach(btn => {
+        btn.addEventListener('mousemove', (e) => {
+          const rect = btn.getBoundingClientRect();
+          const x = e.clientX - rect.left; // x position within the element
+          const y = e.clientY - rect.top;  // y position within the element
+          
+          const centerX = rect.width / 2;
+          const centerY = rect.height / 2;
+          
+          const deltaX = (x - centerX) / centerX;
+          const deltaY = (y - centerY) / centerY;
+          
+          // Max pull distance
+          const distance = 15;
+          btn.style.transform = `translate(${deltaX * distance}px, ${deltaY * distance}px)`;
+        });
+
+        btn.addEventListener('mouseleave', () => {
+          btn.style.transform = `translate(0px, 0px)`;
+          btn.style.transition = 'transform 0.3s cubic-bezier(0.2, 0, 0.2, 1)';
+        });
+        
+        btn.addEventListener('mouseenter', () => {
+          btn.style.transition = 'transform 0.1s cubic-bezier(0.2, 0, 0.2, 1)';
+        });
+      });
 
     });
   </script>

@@ -2,6 +2,10 @@
 
 **[🚀 View Live Demo](http://ephemeral-gingersnap-8def60.netlify.app)**
 
+
+
+password:My-Drop-Site
+
 A premium, state-of-the-art landing page for an AI Automation and AI Agents agency. This project features a dark, cinematic aesthetic with custom AI-generated visuals, advanced scroll-reveal animations, interactive dashboards, and a sleek modern UI designed to capture high-value enterprise clients.
 
 ## 🚀 Features

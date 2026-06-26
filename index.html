@@ -1,0 +1,3015 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ARMORY — Advanced AI Agents & Process Automation Agency</title>
+  <meta name="description" content="Armory is a premium AI agency specializing in custom agents, autonomous workflows, and enterprise process automation.">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    /* ==========================================================================
+       DESIGN SYSTEM & RESET
+       ========================================================================== */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      border-radius: 0 !important; /* Strict sharp edges requirement */
+    }
+
+    :root {
+      --bg-dark: #0a0a0a;
+      --bg-light: #e8e8e8;
+      --text-dark: #ffffff;
+      --text-light: #0a0a0a;
+      --border-dark: rgba(255, 255, 255, 0.08);
+      --border-light: rgba(0, 0, 0, 0.08);
+      --accent: #ffffff;
+      --font-display: 'Space Grotesk', sans-serif;
+      --font-body: 'Inter', sans-serif;
+      --grid-color: rgba(255, 255, 255, 0.12);
+    }
+
+    html {
+      scroll-behavior: smooth;
+      background-color: var(--bg-dark);
+      color: var(--text-dark);
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.5;
+      overflow-x: hidden;
+    }
+
+    body {
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: var(--font-display);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      text-transform: uppercase;
+    }
+
+    p {
+      color: rgba(255, 255, 255, 0.7);
+      font-weight: 400;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+      transition: opacity 0.2s ease;
+    }
+
+    button, .cta-btn {
+      font-family: var(--font-display);
+      font-weight: 500;
+      text-transform: uppercase;
+      cursor: pointer;
+      background: transparent;
+      border: 1px solid var(--text-dark);
+      color: var(--text-dark);
+      padding: 1rem 2rem;
+      font-size: 0.9rem;
+      letter-spacing: 0.05em;
+      transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+    }
+
+    button:hover, .cta-btn:hover {
+      background: var(--text-dark);
+      color: var(--bg-dark);
+    }
+
+    /* ==========================================================================
+       4-COLUMN VERTICAL GRID OVERLAY
+       ========================================================================== */
+    .grid-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 100;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      padding: 0 10%;
+      mix-blend-mode: difference;
+    }
+
+    .grid-col {
+      border-right: 1px solid var(--grid-color);
+      height: 100%;
+    }
+
+    .grid-col:first-child {
+      border-left: 1px solid var(--grid-color);
+    }
+
+    @media (max-width: 768px) {
+      .grid-overlay {
+        padding: 0 5%;
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .grid-col:nth-child(3), .grid-col:nth-child(4) {
+        display: none;
+      }
+    }
+
+    /* Container alignment helper */
+    .container {
+      max-width: 100%;
+      padding: 0 10%;
+      margin: 0 auto;
+      position: relative;
+      z-index: 10;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 0 5%;
+      }
+    }
+
+    /* Section helpers */
+    section {
+      position: relative;
+      border-bottom: 1px solid var(--border-dark);
+    }
+
+    .section-light {
+      background-color: var(--bg-light);
+      color: var(--text-light);
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .section-light p {
+      color: rgba(0, 0, 0, 0.7);
+    }
+
+    /* ==========================================================================
+       NAVBAR
+       ========================================================================== */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 999;
+      background: rgba(10, 10, 10, 0.75);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border-dark);
+      height: 80px;
+    }
+
+    /* ==========================================================================
+       SCROLL ANIMATIONS
+       ========================================================================== */
+    .animate-on-scroll {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    
+    .animate-on-scroll.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .stagger-1 { transition-delay: 0.1s; }
+    .stagger-2 { transition-delay: 0.2s; }
+    .stagger-3 { transition-delay: 0.3s; }
+    .stagger-4 { transition-delay: 0.4s; }
+
+    .nav-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 100%;
+      padding: 0 10%;
+    }
+
+    @media (max-width: 768px) {
+      .nav-container {
+        padding: 0 5%;
+      }
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 700;
+      text-transform: lowercase;
+      letter-spacing: -0.05em;
+      color: var(--text-dark);
+    }
+
+    .logo svg {
+      width: 1.5rem;
+      height: 1.5rem;
+      fill: currentColor;
+    }
+
+    .hamburger {
+      width: 30px;
+      height: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      cursor: pointer;
+      z-index: 1001;
+      border: none !important;
+      padding: 0 !important;
+      background: transparent !important;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 100%;
+      height: 2px;
+      background-color: var(--text-dark);
+      transition: transform 0.3s ease, background-color 0.3s ease;
+    }
+
+    .hamburger.open span:nth-child(1) {
+      transform: translateY(9px) rotate(45deg);
+    }
+
+    .hamburger.open span:nth-child(2) {
+      transform: translateY(-9px) rotate(-45deg);
+    }
+
+    /* Fullscreen Overlay Menu */
+    .menu-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: var(--bg-dark);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.4s ease, visibility 0.4s ease;
+    }
+
+    .menu-overlay.open {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .menu-links {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      text-align: center;
+    }
+
+    .menu-link {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 6vw, 4.5rem);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: -0.03em;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: transform 0.5s ease, opacity 0.5s ease;
+    }
+
+    .menu-overlay.open .menu-link {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .menu-link:nth-child(1) { transition-delay: 0.1s; }
+    .menu-link:nth-child(2) { transition-delay: 0.2s; }
+    .menu-link:nth-child(3) { transition-delay: 0.3s; }
+    .menu-link:nth-child(4) { transition-delay: 0.4s; }
+
+    .menu-link a:hover {
+      opacity: 0.5;
+    }
+
+    /* ==========================================================================
+       HERO SECTION
+       ========================================================================== */
+    .hero {
+      height: 100vh;
+      width: 100%;
+      position: relative;
+      display: flex;
+      align-items: flex-end;
+      padding-bottom: 8%;
+      overflow: hidden;
+    }
+
+    .hero-video-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      object-fit: cover;
+      pointer-events: none;
+      filter: brightness(0.35) saturate(1.3);
+    }
+
+    /* Veil & Fog gradients to ensure readable text */
+    .hero-veil {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to right, rgba(10, 10, 10, 0.95) 0%, rgba(10, 10, 10, 0.6) 30%, rgba(10, 10, 10, 0) 60%);
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .hero-fog {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to top, rgba(10, 10, 10, 1) 0%, rgba(10, 10, 10, 0.5) 25%, rgba(10, 10, 10, 0) 50%);
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 3;
+      max-width: 650px;
+    }
+
+    .hero-title {
+      font-size: clamp(2.5rem, 7vw, 5.5rem);
+      line-height: 0.95;
+      margin-bottom: 1.5rem;
+      letter-spacing: -0.05em;
+    }
+
+    .hero-subtext {
+      font-size: clamp(1rem, 2vw, 1.25rem);
+      margin-bottom: 2.5rem;
+      max-width: 480px;
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .hero-btn {
+      border: 1px solid var(--text-dark);
+      background: transparent;
+      padding: 1.2rem 2.5rem;
+      font-size: 1rem;
+    }
+
+    /* ==========================================================================
+       LOGO MARQUEE
+       ========================================================================== */
+    .marquee-section {
+      background: var(--bg-dark);
+      border-bottom: 1px solid var(--border-dark);
+      padding: 2.5rem 0;
+      overflow: hidden;
+    }
+
+    .marquee-container {
+      display: flex;
+      width: 100%;
+      overflow: hidden;
+    }
+
+    .marquee-track {
+      display: flex;
+      width: max-content;
+      animation: marquee-scroll 35s linear infinite;
+    }
+
+    .marquee-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: -0.03em;
+      color: rgba(255, 255, 255, 0.25);
+      padding: 0 4rem;
+      user-select: none;
+    }
+
+    .marquee-item svg {
+      width: 1.5rem;
+      height: 1.5rem;
+      fill: rgba(255, 255, 255, 0.25);
+    }
+
+    @keyframes marquee-scroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* ==========================================================================
+       VIDEO SECTION
+       ========================================================================== */
+    .video-section {
+      height: 100vh;
+      width: 100%;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .video-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      object-fit: cover;
+      pointer-events: none;
+      filter: brightness(0.45) saturate(1.2);
+    }
+
+    .video-section::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(ellipse at center, rgba(10,10,10,0.15) 0%, rgba(10,10,10,0.7) 70%, rgba(10,10,10,0.95) 100%);
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .video-label-tr {
+      position: absolute;
+      top: 40px;
+      right: 10%;
+      font-family: var(--font-display);
+      text-transform: uppercase;
+      font-size: 0.9rem;
+      letter-spacing: 0.05em;
+      z-index: 3;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 0.5rem 1rem;
+      background: rgba(10, 10, 10, 0.6);
+      backdrop-filter: blur(8px);
+    }
+
+    @media (max-width: 768px) {
+      .video-label-tr {
+        right: 5%;
+      }
+    }
+
+    .video-content {
+      position: relative;
+      z-index: 3;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .video-logo {
+      width: 4rem;
+      height: 4rem;
+      fill: var(--text-dark);
+      animation: pulse-glow 3s infinite ease-in-out;
+    }
+
+    @keyframes pulse-glow {
+      0%, 100% { filter: drop-shadow(0 0 5px rgba(255,255,255,0.2)); opacity: 0.8; }
+      50% { filter: drop-shadow(0 0 25px rgba(255,255,255,0.6)); opacity: 1; }
+    }
+
+    .play-btn {
+      border: 1px dashed var(--text-dark);
+      background: transparent;
+      padding: 1.5rem 3rem;
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      transition: border-style 0.3s ease, background 0.3s ease, color 0.3s ease;
+    }
+
+    .play-btn:hover {
+      border-style: solid;
+      background: var(--text-dark);
+      color: var(--bg-dark);
+    }
+
+    /* Modal Styling */
+    .video-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(5, 5, 5, 0.95);
+      z-index: 2000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+      padding: 5%;
+    }
+
+    .video-modal.open {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal-container {
+      width: 100%;
+      max-width: 1000px;
+      height: 70vh;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: var(--bg-dark);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .modal-header {
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-title {
+      font-family: var(--font-display);
+      font-size: 0.9rem;
+      letter-spacing: 0.05em;
+    }
+
+    .modal-close {
+      background: transparent;
+      border: none !important;
+      color: var(--text-dark);
+      font-family: var(--font-display);
+      font-size: 0.9rem;
+      cursor: pointer;
+      text-transform: uppercase;
+      padding: 0 !important;
+    }
+
+    .modal-close:hover {
+      opacity: 0.7;
+    }
+
+    .modal-body {
+      flex-grow: 1;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #modal-video-player {
+      width: 100%;
+      height: 100%;
+      background: #000000;
+      outline: none;
+    }
+
+    /* ==========================================================================
+       SERVICES SECTION (LIGHT GRAY)
+       ========================================================================== */
+    .services-section {
+      padding: 8% 0;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      border-top: 1px solid var(--text-light);
+      border-left: 1px solid var(--text-light);
+      margin-top: 0;
+    }
+
+    @media (max-width: 768px) {
+      .services-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .service-card {
+      border-right: 1px solid var(--text-light);
+      border-bottom: 1px solid var(--text-light);
+      padding: 4rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 380px;
+      transition: background-color 0.3s ease;
+      background-color: var(--bg-light);
+    }
+
+    .service-card:hover {
+      background-color: #dcdcdc; /* Subtle darken hover */
+    }
+
+    .service-num {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 500;
+      color: rgba(0, 0, 0, 0.4);
+      margin-bottom: 3rem;
+    }
+
+    .service-title {
+      font-size: clamp(1.8rem, 4vw, 2.5rem);
+      margin-bottom: 1rem;
+      color: var(--text-light);
+    }
+
+    .service-desc {
+      font-size: 1rem;
+      color: rgba(0, 0, 0, 0.7);
+      max-width: 420px;
+    }
+
+    /* ==========================================================================
+       WORKFLOW SECTION
+       ========================================================================== */
+    .workflow-section {
+      padding: 8% 0;
+      background-color: var(--bg-dark);
+    }
+
+    .section-header-split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: flex-start;
+      margin-bottom: 5rem;
+    }
+
+    @media (max-width: 768px) {
+      .section-header-split {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+    }
+
+    .section-title {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+    }
+
+    .section-desc {
+      font-size: 1.1rem;
+      max-width: 500px;
+      margin-top: 0.5rem;
+    }
+
+    /* Simulated Dashboard UI */
+    .dashboard-ui {
+      border: 1px solid var(--border-dark);
+      background: #0f0f0f;
+      width: 100%;
+      height: 600px;
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .db-header {
+      height: 50px;
+      border-bottom: 1px solid var(--border-dark);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 1.5rem;
+      background: #090909;
+    }
+
+    .db-title {
+      font-family: var(--font-display);
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      color: rgba(255, 255, 255, 0.4);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .db-status-pill {
+      font-size: 0.7rem;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 0.2rem 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      color: #ffffff;
+      font-family: var(--font-body);
+    }
+
+    .db-status-dot {
+      width: 5px;
+      height: 5px;
+      background: #ffffff;
+      animation: pulse-dot 1.5s infinite ease-in-out;
+    }
+
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 1; }
+    }
+
+    .db-actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .db-btn {
+      padding: 0.4rem 0.8rem;
+      font-size: 0.75rem;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .db-main {
+      display: flex;
+      flex-grow: 1;
+      height: calc(100% - 50px);
+    }
+
+    .db-sidebar {
+      width: 240px;
+      border-right: 1px solid var(--border-dark);
+      background: #0b0b0b;
+      display: flex;
+      flex-direction: column;
+    }
+
+    @media (max-width: 768px) {
+      .db-sidebar {
+        display: none;
+      }
+    }
+
+    .db-sidebar-tabs {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      border-bottom: 1px solid var(--border-dark);
+      height: 40px;
+    }
+
+    .db-tab {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-size: 0.7rem;
+      border-right: 1px solid var(--border-dark);
+      cursor: pointer;
+      color: rgba(255, 255, 255, 0.4);
+    }
+
+    .db-tab:last-child {
+      border-right: none;
+    }
+
+    .db-tab.active {
+      color: var(--text-dark);
+      background: #121212;
+    }
+
+    .db-sidebar-content {
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .db-sidebar-section-title {
+      font-family: var(--font-display);
+      font-size: 0.75rem;
+      color: rgba(255, 255, 255, 0.4);
+      letter-spacing: 0.05em;
+    }
+
+    .db-node-palette {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.5rem;
+    }
+
+    .palette-item {
+      padding: 0.75rem;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: #111111;
+      font-size: 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: rgba(255, 255, 255, 0.8);
+      user-select: none;
+    }
+
+    .palette-item svg {
+      width: 1rem;
+      height: 1rem;
+      fill: currentColor;
+    }
+
+    .db-canvas-area {
+      flex-grow: 1;
+      position: relative;
+      background-color: #0a0a0a;
+      background-image: 
+        radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+      background-size: 20px 20px;
+      overflow: hidden;
+      padding: 2rem;
+    }
+
+    /* Connection SVG container overlay */
+    .db-connections-svg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .flow-line {
+      stroke: rgba(255, 255, 255, 0.15);
+      stroke-width: 1.5;
+      fill: none;
+      stroke-dasharray: 4;
+      transition: stroke 0.3s ease, stroke-width 0.3s ease;
+    }
+
+    .flow-line.active {
+      stroke: #ffffff;
+      stroke-width: 2;
+      stroke-dasharray: 4;
+      animation: dash 1s linear infinite;
+    }
+
+    @keyframes dash {
+      to {
+        stroke-dashoffset: -20;
+      }
+    }
+
+    /* Workflow Nodes */
+    .wf-node {
+      position: absolute;
+      width: 180px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: #121212;
+      padding: 0.75rem 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      z-index: 2;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .wf-node.active {
+      border-color: #ffffff;
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.12);
+    }
+
+    .node-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-family: var(--font-display);
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+    }
+
+    .node-badge {
+      font-family: var(--font-body);
+      font-size: 0.6rem;
+      padding: 0.1rem 0.3rem;
+      background: rgba(255, 255, 255, 0.08);
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    .wf-node.active .node-badge {
+      background: rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+    }
+
+    .node-body {
+      font-size: 0.7rem;
+      color: rgba(255, 255, 255, 0.5);
+      font-family: var(--font-body);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Branching Container Box */
+    .branching-group-box {
+      position: absolute;
+      border: 1px dashed rgba(255, 255, 255, 0.25);
+      background: rgba(255, 255, 255, 0.01);
+      z-index: 1;
+      padding: 0.75rem;
+      transition: border-color 0.3s ease;
+    }
+
+    .branching-group-box.active {
+      border-color: rgba(255, 255, 255, 0.7);
+    }
+
+    .group-label {
+      position: absolute;
+      top: -10px;
+      left: 15px;
+      background: #0a0a0a;
+      padding: 0 0.5rem;
+      font-family: var(--font-display);
+      font-size: 0.65rem;
+      letter-spacing: 0.05em;
+      color: rgba(255, 255, 255, 0.4);
+      text-transform: uppercase;
+    }
+
+    .branching-group-box.active .group-label {
+      color: #ffffff;
+    }
+
+    /* Bento Grid Layout */
+    .bento-container {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-gap: 1px;
+      background: var(--border-dark);
+      border: 1px solid var(--border-dark);
+      margin-top: 4rem;
+    }
+
+    .bento-node {
+      background: #0f0f0f;
+      padding: 3rem 2.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: background-color 170ms ease-out, border-color 170ms ease-out, box-shadow 170ms ease-out; /* 150ms-200ms ease-out hover transition */
+      border: 1px solid transparent;
+      cursor: pointer;
+    }
+
+    .bento-node.active, .bento-node:hover {
+      background: #141414;
+      border-color: rgba(255, 255, 255, 0.15);
+      box-shadow: inset 0 0 15px rgba(255, 255, 255, 0.03);
+    }
+
+    .bento-node.item-large {
+      grid-column: span 2;
+      grid-row: span 2;
+      min-height: 480px;
+    }
+
+    .bento-node.item-medium {
+      grid-column: span 2;
+      grid-row: span 1;
+      min-height: 240px;
+    }
+
+    .bento-node.item-small {
+      grid-column: span 1;
+      grid-row: span 1;
+      min-height: 240px;
+    }
+
+    .bento-icon-wrapper {
+      width: 48px;
+      height: 48px;
+      border: 1px solid var(--border-dark);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 2rem;
+    }
+
+    .bento-node.active .bento-icon-wrapper, .bento-node:hover .bento-icon-wrapper {
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    .bento-icon-wrapper svg {
+      width: 1.25rem;
+      height: 1.25rem;
+      fill: var(--text-dark);
+    }
+
+    .bento-title {
+      font-size: 1.3rem;
+      margin-bottom: 1rem;
+    }
+
+    .bento-desc {
+      font-size: 0.95rem;
+      color: rgba(255, 255, 255, 0.6);
+      line-height: 1.5;
+    }
+
+    /* Accordion Layout */
+    .accordion-container {
+      display: none;
+    }
+
+    @media (max-width: 768px) {
+      .bento-container {
+        display: none;
+      }
+      .accordion-container {
+        display: block;
+        border-top: 1px solid var(--border-dark);
+        margin-top: 4rem;
+      }
+      .accordion-item {
+        border-bottom: 1px solid var(--border-dark);
+      }
+      .accordion-header {
+        padding: 1.5rem 1rem;
+        background: #0f0f0f;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: background-color 170ms ease-out; /* 150ms-200ms ease-out toggle hover */
+      }
+      .accordion-header:hover {
+        background-color: #121212;
+      }
+      .accordion-header.active {
+        background: #141414;
+      }
+      .accordion-header-title {
+        font-family: var(--font-display);
+        font-size: 1.1rem;
+        text-transform: uppercase;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+      .accordion-header-title svg {
+        width: 1.1rem;
+        height: 1.1rem;
+        fill: var(--text-dark);
+      }
+      .accordion-icon {
+        font-size: 1.2rem;
+        transition: transform 0.35s ease-in-out;
+      }
+      .accordion-header.active .accordion-icon {
+        transform: rotate(45deg);
+      }
+      .accordion-panel {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.35s ease-in-out; /* 300ms-400ms ease-in-out structural reflow transition */
+        background: #0a0a0a;
+      }
+      .accordion-content {
+        padding: 1.5rem 1rem 2.5rem 1rem;
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 0.95rem;
+        line-height: 1.6;
+      }
+    }
+
+    /* Pricing Section CSS */
+    .pricing-section {
+      padding: 8% 0;
+      background: var(--bg-dark);
+      border-bottom: 1px solid var(--border-dark);
+    }
+
+    .pricing-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 4rem;
+      gap: 2rem;
+      border-bottom: 1px solid var(--border-dark);
+      padding-bottom: 2rem;
+    }
+
+    @media (max-width: 576px) {
+      .pricing-controls {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1.5rem;
+      }
+    }
+
+    .toggle-group {
+      display: flex;
+      border: 1px solid var(--border-dark);
+    }
+
+    .toggle-btn {
+      padding: 0.75rem 1.75rem;
+      font-size: 0.85rem;
+      border: none !important;
+      background: transparent;
+      color: rgba(255, 255, 255, 0.5);
+      font-family: var(--font-display);
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 170ms ease-out, color 170ms ease-out; /* 150ms-200ms ease-out micro-interaction */
+    }
+
+    .toggle-btn.active {
+      background: var(--text-dark);
+      color: var(--bg-dark);
+    }
+
+    .currency-selector-wrapper select {
+      padding: 0.75rem 2rem;
+      font-size: 0.85rem;
+      font-family: var(--font-display);
+      text-transform: uppercase;
+      background: transparent;
+      color: var(--text-dark);
+      border: 1px solid var(--border-dark);
+      cursor: pointer;
+      outline: none;
+      transition: border-color 170ms ease-out;
+    }
+
+    .currency-selector-wrapper select:hover {
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    .currency-selector-wrapper select option {
+      background: var(--bg-dark);
+      color: var(--text-dark);
+    }
+
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+    }
+
+    @media (max-width: 992px) {
+      .pricing-grid {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+      }
+    }
+
+    .pricing-card {
+      border: 1px solid var(--border-dark);
+      background: #0f0f0f;
+      padding: 4rem 3rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 480px;
+      position: relative;
+    }
+
+    .pricing-card.featured {
+      border-color: rgba(255, 255, 255, 0.4);
+      background: #121212;
+      box-shadow: 0 0 30px rgba(255, 255, 255, 0.03);
+    }
+
+    .pricing-card.featured::before {
+      content: "RECOMMENDED";
+      position: absolute;
+      top: 0;
+      right: 0;
+      background: var(--text-dark);
+      color: var(--bg-dark);
+      font-family: var(--font-display);
+      font-size: 0.65rem;
+      font-weight: 700;
+      padding: 0.3rem 0.8rem;
+      letter-spacing: 0.05em;
+    }
+
+    .tier-name {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.5);
+      margin-bottom: 2rem;
+    }
+
+    .pricing-card.featured .tier-name {
+      color: var(--text-dark);
+    }
+
+    .tier-price-box {
+      display: flex;
+      align-items: baseline;
+      margin-bottom: 0.5rem;
+    }
+
+    .tier-price {
+      font-family: var(--font-display);
+      font-size: clamp(3rem, 6vw, 4.5rem);
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .tier-period {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      color: rgba(255, 255, 255, 0.4);
+      margin-left: 0.25rem;
+    }
+
+    .tier-subtext {
+      font-size: 0.8rem;
+      color: rgba(255, 255, 255, 0.4);
+      margin-bottom: 3rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .tier-features {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-bottom: 4rem;
+    }
+
+    .tier-features li {
+      font-size: 0.95rem;
+      color: rgba(255, 255, 255, 0.7);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .tier-features li::before {
+      content: "→";
+      color: rgba(255, 255, 255, 0.3);
+    }
+
+    .pricing-cta {
+      width: 100%;
+    }
+
+    /* ==========================================================================
+       BUILT FOR THE LONG TERM SECTION
+       ========================================================================== */
+    .longterm-section {
+      display: flex;
+      min-height: 100vh;
+      border-bottom: 1px solid var(--border-dark);
+    }
+
+    @media (max-width: 992px) {
+      .longterm-section {
+        flex-direction: column;
+      }
+    }
+
+    .longterm-left {
+      flex: 1;
+      background-color: var(--bg-dark);
+      position: relative;
+      min-height: 400px;
+    }
+
+    #longterm-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .longterm-right {
+      flex: 1;
+      background-color: var(--bg-light);
+      color: var(--text-light);
+      padding: 8%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .longterm-right p {
+      color: rgba(0, 0, 0, 0.7);
+    }
+
+    .longterm-title {
+      font-size: clamp(2rem, 4vw, 3rem);
+      margin-bottom: 2rem;
+      color: var(--text-light);
+    }
+
+    .longterm-desc {
+      font-size: 1.1rem;
+      margin-bottom: 4rem;
+      max-width: 500px;
+    }
+
+    .longterm-list {
+      display: flex;
+      flex-direction: column;
+      gap: 2.5rem;
+    }
+
+    .longterm-item {
+      display: flex;
+      gap: 1.5rem;
+      align-items: flex-start;
+    }
+
+    .longterm-icon {
+      flex-shrink: 0;
+      width: 48px;
+      height: 48px;
+      border: 1px solid var(--text-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .longterm-icon svg {
+      width: 1.25rem;
+      height: 1.25rem;
+      fill: var(--text-light);
+    }
+
+    .longterm-item-title {
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
+      color: var(--text-light);
+    }
+
+    .longterm-item-desc {
+      font-size: 0.95rem;
+      color: rgba(0, 0, 0, 0.6);
+      max-width: 420px;
+    }
+
+    /* ==========================================================================
+       STATS SECTION
+       ========================================================================== */
+    .stats-section {
+      background: var(--bg-dark);
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border-left: 1px solid var(--border-dark);
+    }
+
+    @media (max-width: 768px) {
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .stat-card {
+      border-right: 1px solid var(--border-dark);
+      padding: 5rem 3rem;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      border-bottom: 1px solid var(--border-dark);
+    }
+
+    .stat-number {
+      font-family: var(--font-display);
+      font-size: clamp(3.5rem, 8vw, 5.5rem);
+      font-weight: 700;
+      line-height: 1;
+      letter-spacing: -0.05em;
+    }
+
+    .stat-label {
+      font-family: var(--font-display);
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: rgba(255, 255, 255, 0.4);
+    }
+
+    /* ==========================================================================
+       BLOG/LOGIC SECTION (LIGHT GRAY)
+       ========================================================================== */
+    .blog-section {
+      padding: 8% 0;
+    }
+
+    .eyebrow {
+      font-family: var(--font-display);
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: rgba(0, 0, 0, 0.5);
+      margin-bottom: 1rem;
+      display: block;
+    }
+
+    .blog-desc {
+      font-size: 1.1rem;
+      margin-bottom: 4rem;
+      max-width: 500px;
+    }
+
+    .blog-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 4rem;
+      margin-bottom: 4rem;
+    }
+
+    @media (max-width: 992px) {
+      .blog-grid {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+      }
+    }
+
+    /* Featured Article (Left) */
+    .featured-article {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      border: 1px solid var(--border-light);
+      background: #f0f0f0;
+      padding: 2.5rem;
+    }
+
+    .featured-thumb-container {
+      width: 100%;
+      height: 380px;
+      overflow: hidden;
+      position: relative;
+      border: 1px solid var(--border-light);
+    }
+
+    .blog-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      filter: grayscale(0.2) contrast(1.1);
+      transition: filter 0.5s ease;
+    }
+
+    .blog-img:hover {
+      filter: grayscale(0) contrast(1.1);
+    }
+
+    .article-meta {
+      font-family: var(--font-display);
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: rgba(0, 0, 0, 0.4);
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .article-title {
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      color: var(--text-light);
+    }
+
+    .article-title a:hover {
+      opacity: 0.7;
+    }
+
+    .article-excerpt {
+      font-size: 1rem;
+      color: rgba(0, 0, 0, 0.6);
+      max-width: 600px;
+    }
+
+    /* Stacked Articles (Right) */
+    .articles-sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 2.5rem;
+    }
+
+    .side-article {
+      display: flex;
+      gap: 1.5rem;
+      padding-bottom: 2.5rem;
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .side-article:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .side-thumb-container {
+      width: 120px;
+      height: 120px;
+      flex-shrink: 0;
+      border: 1px solid var(--border-light);
+      overflow: hidden;
+    }
+
+    .side-article-content {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
+
+    .side-article-title {
+      font-size: 1.15rem;
+      line-height: 1.2;
+      color: var(--text-light);
+    }
+
+    .side-article-title a:hover {
+      opacity: 0.7;
+    }
+
+    .blog-cta-container {
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .blog-cta {
+      border-color: var(--text-light);
+      color: var(--text-light);
+    }
+
+    .blog-cta:hover {
+      background: var(--text-light);
+      color: var(--bg-light);
+    }
+
+    /* ==========================================================================
+       CTA SECTION
+       ========================================================================== */
+    .cta-section {
+      padding: 10% 0;
+      background: var(--bg-dark);
+      text-align: center;
+    }
+
+    .cta-title {
+      font-size: clamp(2.5rem, 7vw, 5rem);
+      margin-bottom: 1.5rem;
+    }
+
+    .cta-subtext {
+      font-size: 1.15rem;
+      color: rgba(255, 255, 255, 0.6);
+      max-width: 500px;
+      margin: 0 auto 3.5rem auto;
+    }
+
+    .cta-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+    }
+
+    @media (max-width: 576px) {
+      .cta-buttons {
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+      }
+      .cta-buttons button {
+        width: 100%;
+        max-width: 300px;
+      }
+    }
+
+    /* ==========================================================================
+       FOOTER
+       ========================================================================== */
+    footer {
+      background: var(--bg-dark);
+      border-top: 1px solid var(--border-dark);
+      padding: 6% 0 3% 0;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.5fr repeat(3, 1fr);
+      gap: 4rem;
+      margin-bottom: 5rem;
+    }
+
+    @media (max-width: 992px) {
+      .footer-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 3rem;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+      }
+    }
+
+    .footer-brand {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .footer-logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 700;
+      text-transform: lowercase;
+      letter-spacing: -0.05em;
+    }
+
+    .footer-logo svg {
+      width: 1.5rem;
+      height: 1.5rem;
+      fill: currentColor;
+    }
+
+    .footer-desc {
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.5);
+      max-width: 280px;
+    }
+
+    .footer-heading {
+      font-family: var(--font-display);
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      color: var(--text-dark);
+      margin-bottom: 1.5rem;
+    }
+
+    .footer-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .footer-links a {
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    .footer-links a:hover {
+      color: var(--text-dark);
+    }
+
+    .footer-bottom {
+      border-top: 1px solid var(--border-dark);
+      padding-top: 2rem;
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      color: rgba(255, 255, 255, 0.4);
+    }
+
+    @media (max-width: 576px) {
+      .footer-bottom {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 4-COLUMN VERTICAL GRID OVERLAY -->
+  <div class="grid-overlay" aria-hidden="true">
+    <div class="grid-col"></div>
+    <div class="grid-col"></div>
+    <div class="grid-col"></div>
+    <div class="grid-col"></div>
+  </div>
+
+  <!-- NAVBAR -->
+  <header>
+    <div class="nav-container">
+      <a href="#" class="logo" aria-label="Armory Logo">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M13 2L3 14H12L11 22L21 10H12L13 2Z"/>
+        </svg>
+        armory
+      </a>
+      <button class="hamburger" id="hamburger-menu" aria-label="Toggle Navigation Menu">
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- FULLSCREEN OVERLAY MENU -->
+  <nav class="menu-overlay" id="menu-overlay" aria-hidden="true">
+    <div class="menu-links">
+      <div class="menu-link"><a href="#services">01 / Services</a></div>
+      <div class="menu-link"><a href="#workflow">02 / Workflow</a></div>
+      <div class="menu-link"><a href="#philosophy">03 / Philosophy</a></div>
+      <div class="menu-link"><a href="#blog">04 / Logic</a></div>
+    </div>
+  </nav>
+
+  <!-- HERO SECTION -->
+  <section class="hero" id="hero">
+    <video class="hero-video-bg" autoplay muted loop playsinline poster="https://i.pinimg.com/videos/thumbnails/originals/20/e0/57/20e0574f6059aba9246e90b2dd8a6466.0000000.jpg">
+      <source src="https://v1.pinimg.com/videos/iht/expMp4/20/e0/57/20e0574f6059aba9246e90b2dd8a6466_720w.mp4" type="video/mp4">
+    </video>
+    <div class="hero-veil" aria-hidden="true"></div>
+    <div class="hero-fog" aria-hidden="true"></div>
+    <div class="container hero-content">
+      <h1 class="hero-title">Power your future with AI</h1>
+      <p class="hero-subtext">Autonomous workflows and customized AI agents engineered to execute your operations at scale with absolute precision.</p>
+      <a href="#workflow" class="cta-btn hero-btn">
+        Build A Workflow
+        <svg width="14" height="14" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M13 2L3 14H12L11 22L21 10H12L13 2Z" fill="currentColor"/>
+        </svg>
+      </a>
+    </div>
+  </section>
+
+  <!-- LOGO MARQUEE -->
+  <section class="marquee-section" aria-label="Client Logos">
+    <div class="marquee-container">
+      <div class="marquee-track" id="marquee-track">
+        <!-- Slide 1 -->
+        <div class="marquee-item">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2L2 22h20L12 2zm0 3.8L18.8 19H5.2L12 5.8z"/></svg>
+          AETNA
+        </div>
+        <div class="marquee-item">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M2 2h20v20H2V2zm4 4v12h12V6H6z"/></svg>
+          CIGNA
+        </div>
+        <div class="marquee-item">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2L2 7l10 5 10-5-10-5zm0 10L2 17l10 5 10-5-10-5z"/></svg>
+          ANTHEM
+        </div>
+        <div class="marquee-item">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 18a8 8 0 110-16 8 8 0 010 16z"/></svg>
+          UNITEDHEALTH
+        </div>
+        <div class="marquee-item">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2L2 9h4v11h12V9h4L12 2z"/></svg>
+          HUMANA
+        </div>
+        <div class="marquee-item">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2l10 10-10 10L2 12 12 2z"/></svg>
+          CENTENE
+        </div>
+        <!-- Slide 2 (Duplicate for loop) -->
+        <div class="marquee-item">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2L2 22h20L12 2zm0 3.8L18.8 19H5.2L12 5.8z"/></svg>
+          AETNA
+        </div>
+        <div class="marquee-item">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M2 2h20v20H2V2zm4 4v12h12V6H6z"/></svg>
+          CIGNA
+        </div>
+        <div class="marquee-item">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2L2 7l10 5 10-5-10-5zm0 10L2 17l10 5 10-5-10-5z"/></svg>
+          ANTHEM
+        </div>
+        <div class="marquee-item">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 18a8 8 0 110-16 8 8 0 010 16z"/></svg>
+          UNITEDHEALTH
+        </div>
+        <div class="marquee-item">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2L2 9h4v11h12V9h4L12 2z"/></svg>
+          HUMANA
+        </div>
+        <div class="marquee-item">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2l10 10-10 10L2 12 12 2z"/></svg>
+          CENTENE
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VIDEO SECTION -->
+  <section class="video-section" id="video">
+    <video class="video-bg" autoplay muted loop playsinline poster="https://i.pinimg.com/videos/thumbnails/originals/d5/68/d5/d568d53b40cfc3963f0511f6c8949ae3.0000000.jpg">
+      <source src="https://v1.pinimg.com/videos/iht/expMp4/d5/68/d5/d568d53b40cfc3963f0511f6c8949ae3_720w.mp4" type="video/mp4">
+    </video>
+    <div class="video-label-tr">⏱ 2 Minutes Watch</div>
+    <div class="video-content">
+      <svg class="video-logo" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M13 2L3 14H12L11 22L21 10H12L13 2Z"/>
+      </svg>
+      <button class="play-btn" id="play-video-btn" aria-label="Play Workspace Simulation Video">
+        PLAY VIDEO
+      </button>
+    </div>
+  </section>
+
+  <!-- VIDEO SHOWCASE MODAL -->
+  <div class="video-modal" id="video-modal" aria-hidden="true" role="dialog">
+    <div class="modal-container">
+      <div class="modal-header">
+        <div class="modal-title">ARMORY AUTOPILOT DEMO & SIMULATION</div>
+        <button class="modal-close" id="modal-close-btn">Close [x]</button>
+      </div>
+      <div class="modal-body">
+        <video id="modal-video-player" controls poster="https://i.pinimg.com/videos/thumbnails/originals/d5/68/d5/d568d53b40cfc3963f0511f6c8949ae3.0000000.jpg">
+          <source src="https://v1.pinimg.com/videos/iht/expMp4/d5/68/d5/d568d53b40cfc3963f0511f6c8949ae3_720w.mp4" type="video/mp4">
+        </video>
+      </div>
+    </div>
+  </div>
+
+  <!-- SERVICES SECTION (LIGHT GRAY) -->
+  <section class="services-section section-light" id="services">
+    <div class="container">
+      <span class="eyebrow animate-on-scroll" style="color: rgba(0,0,0,0.5);">Capabilities</span>
+      <h2 class="section-title animate-on-scroll stagger-1" style="color: var(--text-light); max-width: 600px;">Engineering workflows that drive automation</h2>
+      
+      <div class="services-grid">
+        <!-- Card 1 -->
+        <div class="service-card animate-on-scroll stagger-1">
+          <div class="service-num">01</div>
+          <div>
+            <h3 class="service-title">AI Strategy</h3>
+            <p class="service-desc">Architecting bespoke intelligence maps. We identify core process inefficiencies and lay architectural foundations for agent integration.</p>
+          </div>
+        </div>
+        <!-- Card 2 -->
+        <div class="service-card animate-on-scroll stagger-2">
+          <div class="service-num">02</div>
+          <div>
+            <h3 class="service-title">Custom Agents</h3>
+            <p class="service-desc">Building contextual agents equipped with task memory, cognitive tools, and execution models built on your company's proprietary data.</p>
+          </div>
+        </div>
+        <!-- Card 3 -->
+        <div class="service-card animate-on-scroll stagger-1">
+          <div class="service-num">03</div>
+          <div>
+            <h3 class="service-title">Process Automation</h3>
+            <p class="service-desc">Integrating API pipelines and system event listeners. We connect disparate legacy systems to generate seamless autonomous data syncs.</p>
+          </div>
+        </div>
+        <!-- Card 4 -->
+        <div class="service-card animate-on-scroll stagger-2">
+          <div class="service-num">04</div>
+          <div>
+            <h3 class="service-title">Data Intelligence</h3>
+            <p class="service-desc">Structuring unstructured data fields automatically. Extract, clean, compile, and visualize key corporate operational insights.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WORKFLOW SECTION -->
+  <section class="workflow-section" id="workflow">
+    <div class="container">
+      
+      <div class="section-header-split animate-on-scroll">
+        <h2 class="section-title">Visualizing Continuous Autonomic execution</h2>
+        <p class="section-desc">Design, inspect, and trace processes across a real-time visual grid. The Armory engine auto-compiles logic states and schedules execution lines.</p>
+      </div>
+
+      <!-- SIMULATED DASHBOARD BUILDER -->
+      <div class="dashboard-ui animate-on-scroll stagger-1">
+        <!-- DB Header -->
+        <div class="db-header">
+          <div class="db-title">
+            <svg width="12" height="12" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10H7v-2h10v2z" fill="currentColor"/>
+            </svg>
+            ARMORY BUILDER / PIPELINE_A.JSON
+            <span class="db-status-pill">
+              <span class="db-status-dot"></span>
+              LIVE SIMULATION
+            </span>
+          </div>
+          <div class="db-actions">
+            <button class="db-btn" id="db-simulate-btn">SIMULATING...</button>
+            <button class="db-btn" id="db-reset-btn" style="border-color: rgba(255,255,255,0.08); color: rgba(255,255,255,0.4);">RESET</button>
+          </div>
+        </div>
+
+        <!-- DB Main Panel -->
+        <div class="db-main">
+          <!-- Sidebar -->
+          <div class="db-sidebar">
+            <div class="db-sidebar-tabs">
+              <div class="db-tab active">TRIG</div>
+              <div class="db-tab">LOGIC</div>
+              <div class="db-tab">AGENTS</div>
+              <div class="db-tab">ACT</div>
+            </div>
+            <div class="db-sidebar-content">
+              <div class="db-sidebar-section-title">TRIGGER NODES</div>
+              <div class="db-node-palette">
+                <div class="palette-item">
+                  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                  Email Event
+                </div>
+                <div class="palette-item">
+                  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 12H4v-2h16v2zM20 7H4V5h16v2zm0 10H4v-2h16v2z"/></svg>
+                  Webhook API
+                </div>
+                <div class="palette-item">
+                  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm2-7h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"/></svg>
+                  Cron Schedule
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Canvas Area -->
+          <div class="db-canvas-area" id="db-canvas-area">
+            <svg class="db-connections-svg" id="db-connections-svg">
+              <path id="path-1-2" class="flow-line" d="" />
+              <path id="path-2-3" class="flow-line" d="" />
+              <path id="path-3-4" class="flow-line" d="" />
+              <path id="path-3-5" class="flow-line" d="" />
+            </svg>
+
+            <!-- Node 1 -->
+            <div class="wf-node" id="node-1" style="top: 150px; left: 30px;">
+              <div class="node-header">
+                <span>Email Trigger</span>
+                <span class="node-badge">INPUT</span>
+              </div>
+              <div class="node-body">Listening on sales@company.com</div>
+            </div>
+
+            <!-- Node 2 -->
+            <div class="wf-node" id="node-2" style="top: 150px; left: 260px;">
+              <div class="node-header">
+                <span>Edit Fields</span>
+                <span class="node-badge">TRANSFORM</span>
+              </div>
+              <div class="node-body">Parse subject & sender</div>
+            </div>
+
+            <!-- Node 3 -->
+            <div class="wf-node" id="node-3" style="top: 150px; left: 490px;">
+              <div class="node-header">
+                <span>AI Agent</span>
+                <span class="node-badge" style="background: rgba(255,255,255,0.15); color: #fff;">COGNITION</span>
+              </div>
+              <div class="node-body">Analyze intent / Extract tags</div>
+            </div>
+
+            <!-- Branching Group Container -->
+            <div class="branching-group-box" id="branching-group" style="top: 50px; left: 710px; width: 230px; height: 260px;">
+              <div class="group-label">Branching Sub-flow</div>
+
+              <!-- Node 4 (Inside Branching) -->
+              <div class="wf-node" id="node-4" style="top: 30px; left: 20px;">
+                <div class="node-header">
+                  <span>Code Runner</span>
+                  <span class="node-badge">SCRIPT</span>
+                </div>
+                <div class="node-body">eval(js.extractData)</div>
+              </div>
+
+              <!-- Node 5 (Inside Branching) -->
+              <div class="wf-node" id="node-5" style="top: 155px; left: 20px;">
+                <div class="node-header">
+                  <span>Edit Fields</span>
+                  <span class="node-badge">OUTPUT</span>
+                </div>
+                <div class="node-body">Map to JSON Schema</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Bento Layout on Desktop -->
+      <div class="bento-container" id="bento-wrapper" role="region" aria-label="Core Features Grid">
+        <!-- Card 1: Large -->
+        <div class="bento-node item-large" data-index="0">
+          <div>
+            <div class="bento-icon-wrapper">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M4 4h7v7H4V4zm0 9h7v7H4v-7zm9-9h7v7h-7V4zm0 9h7v7h-7v-7z"/>
+              </svg>
+            </div>
+            <h3 class="bento-title">Infinite Visual Canvas</h3>
+          </div>
+          <p class="bento-desc">Lay out workflows with complete logical visibility. Handle loops, branching pathways, and recursive error-catching in one diagram.</p>
+        </div>
+
+        <!-- Card 2: Medium -->
+        <div class="bento-node item-medium" data-index="1">
+          <div>
+            <div class="bento-icon-wrapper">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+              </svg>
+            </div>
+            <h3 class="bento-title">Autonomous Execution</h3>
+          </div>
+          <p class="bento-desc">Set and forget. Workflows run concurrently on a serverless executor, auto-scaling memory and operations up to millions of events daily.</p>
+        </div>
+
+        <!-- Card 3: Small -->
+        <div class="bento-node item-small" data-index="2">
+          <div>
+            <div class="bento-icon-wrapper">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/>
+              </svg>
+            </div>
+            <h3 class="bento-title">End-to-End Encryption</h3>
+          </div>
+          <p class="bento-desc">Your operational data stays yours. Encryption-at-rest and strict in-transit token hashing keep corporate resources securely sealed.</p>
+        </div>
+
+        <!-- Card 4: Small -->
+        <div class="bento-node item-small" data-index="3">
+          <div>
+            <div class="bento-icon-wrapper">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-4 6h-4v2h4v2h-4v2h4v2H9V7h6v2z"/>
+              </svg>
+            </div>
+            <h3 class="bento-title">Production-Ready Stack</h3>
+          </div>
+          <p class="bento-desc">No sandbox limitations. Deploy direct-to-system scripts, shell executions, and database sync gates with custom container runs.</p>
+        </div>
+      </div>
+
+      <!-- Accordion Layout on Mobile -->
+      <div class="accordion-container" id="accordion-wrapper" role="region" aria-label="Core Features Accordion">
+        <!-- Item 1 -->
+        <div class="accordion-item">
+          <div class="accordion-header" data-index="0" role="button" aria-expanded="false" tabindex="0">
+            <span class="accordion-header-title">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M4 4h7v7H4V4zm0 9h7v7H4v-7zm9-9h7v7h-7V4zm0 9h7v7h-7v-7z"/>
+              </svg>
+              Infinite Visual Canvas
+            </span>
+            <span class="accordion-icon">+</span>
+          </div>
+          <div class="accordion-panel">
+            <div class="accordion-content">
+              Lay out workflows with complete logical visibility. Handle loops, branching pathways, and recursive error-catching in one diagram.
+            </div>
+          </div>
+        </div>
+
+        <!-- Item 2 -->
+        <div class="accordion-item">
+          <div class="accordion-header" data-index="1" role="button" aria-expanded="false" tabindex="0">
+            <span class="accordion-header-title">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+              </svg>
+              Autonomous Execution
+            </span>
+            <span class="accordion-icon">+</span>
+          </div>
+          <div class="accordion-panel">
+            <div class="accordion-content">
+              Set and forget. Workflows run concurrently on a serverless executor, auto-scaling memory and operations up to millions of events daily.
+            </div>
+          </div>
+        </div>
+
+        <!-- Item 3 -->
+        <div class="accordion-item">
+          <div class="accordion-header" data-index="2" role="button" aria-expanded="false" tabindex="0">
+            <span class="accordion-header-title">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/>
+              </svg>
+              End-to-End Encryption
+            </span>
+            <span class="accordion-icon">+</span>
+          </div>
+          <div class="accordion-panel">
+            <div class="accordion-content">
+              Your operational data stays yours. Encryption-at-rest and strict in-transit token hashing keep corporate resources securely sealed.
+            </div>
+          </div>
+        </div>
+
+        <!-- Item 4 -->
+        <div class="accordion-item">
+          <div class="accordion-header" data-index="3" role="button" aria-expanded="false" tabindex="0">
+            <span class="accordion-header-title">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-4 6h-4v2h4v2h-4v2h4v2H9V7h6v2z"/>
+              </svg>
+              Production-Ready Stack
+            </span>
+            <span class="accordion-icon">+</span>
+          </div>
+          <div class="accordion-panel">
+            <div class="accordion-content">
+              No sandbox limitations. Deploy direct-to-system scripts, shell executions, and database sync gates with custom container runs.
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- BUILT FOR THE LONG TERM SECTION -->
+  <section class="longterm-section" id="philosophy">
+    <div class="longterm-left">
+      <canvas id="longterm-canvas"></canvas>
+    </div>
+    <div class="longterm-right">
+      <span class="eyebrow" style="color: rgba(0,0,0,0.5);">Reliability</span>
+      <h2 class="longterm-title">Built for the long term</h2>
+      <p class="longterm-desc">We reject fleeting AI trends. Our agency builds robust, secure, and production-tested software systems designed to operate without maintenance drift.</p>
+      
+      <div class="longterm-list">
+        <!-- Item 1 -->
+        <div class="longterm-item">
+          <div class="longterm-icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
+            </svg>
+          </div>
+          <div>
+            <h4 class="longterm-item-title">Architectural Integrity</h4>
+            <p class="longterm-item-desc">We build clean codebase systems using microservice models that insulate agent layers from core CRM/ERPs.</p>
+          </div>
+        </div>
+        <!-- Item 2 -->
+        <div class="longterm-item">
+          <div class="longterm-icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+            </svg>
+          </div>
+          <div>
+            <h4 class="longterm-item-title">Strict Testing Standards</h4>
+            <p class="longterm-item-desc">Continuous unit and agent behavior validation. Mock runs ensure zero logical drift during LLM provider updates.</p>
+          </div>
+        </div>
+        <!-- Item 3 -->
+        <div class="longterm-item">
+          <div class="longterm-icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/>
+            </svg>
+          </div>
+          <div>
+            <h4 class="longterm-item-title">Enterprise Security First</h4>
+            <p class="longterm-item-desc">On-prem deployment capabilities and strict adherence to SOC2-aligned compliance models.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING SECTION -->
+  <section class="pricing-section" id="pricing">
+    <div class="container">
+      <span class="eyebrow" style="color: rgba(255,255,255,0.4);">Plans</span>
+      <h2 class="section-title">Matrix-Driven Pricing</h2>
+      <p class="section-desc" style="margin-bottom: 4rem;">Scale seamlessly with performance-isolated dynamic currency calculation and regional tariff scaling.</p>
+
+      <!-- Pricing Controls -->
+      <div class="pricing-controls">
+        <!-- Billing Cycle Toggle -->
+        <div class="toggle-group" id="billing-toggle-group">
+          <button class="toggle-btn active" id="btn-monthly" data-cycle="monthly">Monthly</button>
+          <button class="toggle-btn" id="btn-annual" data-cycle="annual">Annual (-20%)</button>
+        </div>
+
+        <!-- Currency Selector Dropdown -->
+        <div class="currency-selector-wrapper">
+          <select id="currency-select" aria-label="Select Currency">
+            <option value="USD">USD ($)</option>
+            <option value="INR">INR (₹)</option>
+            <option value="EUR">EUR (€)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Pricing Grid -->
+      <div class="pricing-grid">
+        <!-- Tier 1: Starter -->
+        <div class="pricing-card">
+          <div class="tier-name">Starter</div>
+          <div class="tier-price-box">
+            <span class="tier-price" id="price-starter">$29</span>
+            <span class="tier-period" id="period-starter">/ mo</span>
+          </div>
+          <div class="tier-subtext" id="subtext-starter">billed monthly</div>
+          <ul class="tier-features">
+            <li>5 Active Workflows</li>
+            <li>10,000 Executions / mo</li>
+            <li>Basic AI Agent Nodes</li>
+            <li>Standard Integrations</li>
+          </ul>
+          <button class="cta-btn pricing-cta">Get Started</button>
+        </div>
+
+        <!-- Tier 2: Growth -->
+        <div class="pricing-card featured">
+          <div class="tier-name">Growth</div>
+          <div class="tier-price-box">
+            <span class="tier-price" id="price-growth">$79</span>
+            <span class="tier-period" id="period-growth">/ mo</span>
+          </div>
+          <div class="tier-subtext" id="subtext-growth">billed monthly</div>
+          <ul class="tier-features">
+            <li>20 Active Workflows</li>
+            <li>100,000 Executions / mo</li>
+            <li>Advanced Cognition Nodes</li>
+            <li>Premium Webhooks & API Access</li>
+          </ul>
+          <button class="cta-btn pricing-cta">Upgrade to Growth</button>
+        </div>
+
+        <!-- Tier 3: Enterprise -->
+        <div class="pricing-card">
+          <div class="tier-name">Enterprise</div>
+          <div class="tier-price-box">
+            <span class="tier-price" id="price-enterprise">$249</span>
+            <span class="tier-period" id="period-enterprise">/ mo</span>
+          </div>
+          <div class="tier-subtext" id="subtext-enterprise">billed monthly</div>
+          <ul class="tier-features">
+            <li>Unlimited Workflows</li>
+            <li>1,000,000 Executions / mo</li>
+            <li>Dedicated GPU Node Isolation</li>
+            <li>Custom Agents & Data Models</li>
+          </ul>
+          <button class="cta-btn pricing-cta">Contact Sales</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS SECTION -->
+  <section class="stats-section" id="stats">
+    <div class="stats-grid">
+      <!-- Stat 1 -->
+      <div class="stat-card">
+        <div class="stat-number" data-target="200">0+</div>
+        <div class="stat-label">Automations Deployed</div>
+      </div>
+      <!-- Stat 2 -->
+      <div class="stat-card">
+        <div class="stat-number" data-target="98">0%</div>
+        <div class="stat-label">Execution Success</div>
+      </div>
+      <!-- Stat 3 -->
+      <div class="stat-card">
+        <div class="stat-number" data-target="10">0+</div>
+        <div class="stat-label">Custom AI Agents</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BLOG / LOGIC SECTION (LIGHT GRAY) -->
+  <section class="blog-section section-light" id="blog">
+    <div class="container">
+      <span class="eyebrow animate-on-scroll" style="color: rgba(0,0,0,0.5);">Logic</span>
+      <h2 class="section-title animate-on-scroll stagger-1" style="color: var(--text-light);">Inside our engineering loop</h2>
+      <p class="blog-desc animate-on-scroll stagger-2" style="color: rgba(0,0,0,0.6);">Technical insights, architecture patterns, and automation strategies published weekly by the Armory development team.</p>
+
+      <div class="blog-grid">
+        <!-- Featured (Left) -->
+        <article class="featured-article animate-on-scroll stagger-1">
+          <div class="featured-thumb-container">
+            <img class="blog-img" src="assets/blog-featured.png" alt="Architecting State-Driven AI Agents with Graph Logic">
+          </div>
+          <div class="article-meta">
+            <span>June 20, 2026</span>
+            <span>8 Min Read</span>
+          </div>
+          <h3 class="article-title"><a href="#">Architecting State-Driven AI Agents with Graph Logic</a></h3>
+          <p class="article-excerpt">How to design AI agents that can handle long-running operations without memory loss. We dive deep into state machine serialization and persistent memory graphs.</p>
+        </article>
+
+        <!-- Sidebar Stack (Right) -->
+        <div class="articles-sidebar">
+          <!-- Small article 1 -->
+          <article class="side-article animate-on-scroll stagger-2">
+            <div class="side-thumb-container">
+              <img class="blog-img" src="assets/blog-side-1.png" alt="Optimizing LLM Context Windows with Embeddings Filtering">
+            </div>
+            <div class="side-article-content">
+              <div class="article-meta">
+                <span>June 15, 2026</span>
+              </div>
+              <h3 class="side-article-title"><a href="#">Optimizing LLM Context Windows with Embeddings Filtering</a></h3>
+              <div class="article-meta" style="margin-top: 0.5rem;">
+                <span>5 Min Read</span>
+              </div>
+            </div>
+          </article>
+          
+          <!-- Small article 2 -->
+          <article class="side-article animate-on-scroll stagger-3">
+            <div class="side-thumb-container">
+              <img class="blog-img" src="assets/blog-side-2.png" alt="Securing Webhook Triggers Against Dynamic Payload Attacks">
+            </div>
+            <div class="side-article-content">
+              <div class="article-meta">
+                <span>May 29, 2026</span>
+              </div>
+              <h3 class="side-article-title"><a href="#">Securing Webhook Triggers Against Dynamic Payload Attacks</a></h3>
+              <div class="article-meta" style="margin-top: 0.5rem;">
+                <span>6 Min Read</span>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+
+      <div class="blog-cta-container">
+        <a href="#" class="cta-btn blog-cta">
+          View Articles
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA SECTION -->
+  <section class="cta-section" id="contact">
+    <div class="container cta-container animate-on-scroll">
+      <h2 class="section-title">Ready to build the future?</h2>
+      <p class="blog-desc" style="margin-top: 1.5rem; color: rgba(255,255,255,0.7); max-width: 600px; margin-left: auto; margin-right: auto; text-align: center;">Request a technical consultation to explore custom autonomic workflows for your operational scaling.</p>
+      
+      <div class="cta-buttons animate-on-scroll stagger-1">
+        <button class="cta-btn">Get Started</button>
+        <button class="cta-btn" style="border-color: rgba(255,255,255,0.15); color: rgba(255,255,255,0.6);">Talk to Expert</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <!-- Brand -->
+        <div class="footer-brand">
+          <a href="#" class="footer-logo">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M13 2L3 14H12L11 22L21 10H12L13 2Z"/>
+            </svg>
+            armory
+          </a>
+          <p class="footer-desc">Architecting robust, secure, and production-tested AI software systems for modern operational scaling.</p>
+        </div>
+        <!-- Services -->
+        <div>
+          <h4 class="footer-heading">Services</h4>
+          <ul class="footer-links">
+            <li><a href="#services">AI Strategy</a></li>
+            <li><a href="#services">Custom Agents</a></li>
+            <li><a href="#services">Process Automation</a></li>
+            <li><a href="#services">Data Intelligence</a></li>
+          </ul>
+        </div>
+        <!-- Company -->
+        <div>
+          <h4 class="footer-heading">Company</h4>
+          <ul class="footer-links">
+            <li><a href="#philosophy">Philosophy</a></li>
+            <li><a href="#blog">Logic / Blog</a></li>
+            <li><a href="#">Security Stack</a></li>
+            <li><a href="#">Contact Engineering</a></li>
+          </ul>
+        </div>
+        <!-- Legal -->
+        <div>
+          <h4 class="footer-heading">Legal</h4>
+          <ul class="footer-links">
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Terms of Operation</a></li>
+            <li><a href="#">System Agreement</a></li>
+            <li><a href="#">SOC2 Compliance</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>&copy; 2026 ARMORY AGENCY. ALL RIGHTS RESERVED.</span>
+        <span>SHARP EDGES SYSTEM // VER. 1.0.4</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==========================================================================
+       JAVASCRIPT SCRIPTS
+       ========================================================================== -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+
+      /* ==========================================================================
+         BENTO-TO-ACCORDION WITH CONTEXT LOCK
+         ========================================================================== */
+      const bentoNodes = document.querySelectorAll(".bento-node");
+      const accordionHeaders = document.querySelectorAll(".accordion-header");
+      const accordionPanels = document.querySelectorAll(".accordion-panel");
+
+      let currentActiveIndex = 0; // Default active item index
+      let lastWindowWidth = window.innerWidth;
+      const mobileBreakpointLimit = 768;
+
+      function updateBentoHighlight() {
+        bentoNodes.forEach((node, idx) => {
+          if (idx === currentActiveIndex) {
+            node.classList.add("active");
+          } else {
+            node.classList.remove("active");
+          }
+        });
+      }
+
+      function updateAccordionState(smooth = true) {
+        accordionPanels.forEach((panel, idx) => {
+          const header = accordionHeaders[idx];
+          if (idx === currentActiveIndex) {
+            header.classList.add("active");
+            header.setAttribute("aria-expanded", "true");
+            if (smooth) {
+              panel.style.maxHeight = panel.scrollHeight + "px";
+            } else {
+              panel.style.maxHeight = "none";
+            }
+          } else {
+            header.classList.remove("active");
+            header.setAttribute("aria-expanded", "false");
+            panel.style.maxHeight = "0px";
+          }
+        });
+      }
+
+      // Desktop Hover Listeners
+      bentoNodes.forEach((node) => {
+        node.addEventListener("mouseenter", () => {
+          const index = parseInt(node.getAttribute("data-index"), 10);
+          currentActiveIndex = index;
+          updateBentoHighlight();
+        });
+      });
+
+      // Mobile Click Listeners
+      accordionHeaders.forEach((header) => {
+        header.addEventListener("click", () => {
+          const index = parseInt(header.getAttribute("data-index"), 10);
+          if (currentActiveIndex === index && header.classList.contains("active")) {
+            currentActiveIndex = -1; // close accordion
+          } else {
+            currentActiveIndex = index;
+          }
+          updateAccordionState(true);
+        });
+      });
+
+      // Context Lock Resize Listener
+      window.addEventListener("resize", () => {
+        const currentWidth = window.innerWidth;
+        if (lastWindowWidth > mobileBreakpointLimit && currentWidth <= mobileBreakpointLimit) {
+          updateAccordionState(true);
+        } else if (lastWindowWidth <= mobileBreakpointLimit && currentWidth > mobileBreakpointLimit) {
+          updateBentoHighlight();
+        }
+        lastWindowWidth = currentWidth;
+      });
+
+      // Run initial highlights
+      if (window.innerWidth <= mobileBreakpointLimit) {
+        updateAccordionState(false);
+      } else {
+        updateBentoHighlight();
+      }
+
+      /* ==========================================================================
+         PRICING MATRIX & DYNAMIC CALCULATION
+         ========================================================================== */
+      const pricingMatrix = {
+        tiers: {
+          starter: { baseUSD: 29 },
+          growth: { baseUSD: 79 },
+          enterprise: { baseUSD: 249 }
+        },
+        regions: {
+          USD: { symbol: '$', rate: 1.0, tariffMultiplier: 1.0 },
+          INR: { symbol: '₹', rate: 83.0, tariffMultiplier: 0.9 }, // 10% regional price reduction
+          EUR: { symbol: '€', rate: 0.92, tariffMultiplier: 1.05 } // 5% regional markup
+        },
+        annualDiscountMultiplier: 0.8
+      };
+
+      const btnMonthly = document.getElementById("btn-monthly");
+      const btnAnnual = document.getElementById("btn-annual");
+      const currencySelect = document.getElementById("currency-select");
+
+      const priceStarter = document.getElementById("price-starter");
+      const priceGrowth = document.getElementById("price-growth");
+      const priceEnterprise = document.getElementById("price-enterprise");
+
+      const periodStarter = document.getElementById("period-starter");
+      const periodGrowth = document.getElementById("period-growth");
+      const periodEnterprise = document.getElementById("period-enterprise");
+
+      const subtextStarter = document.getElementById("subtext-starter");
+      const subtextGrowth = document.getElementById("subtext-growth");
+      const subtextEnterprise = document.getElementById("subtext-enterprise");
+
+      let currentCycle = "monthly"; // monthly or annual
+      let currentCurrency = "USD";
+
+      function updatePrices() {
+        const region = pricingMatrix.regions[currentCurrency];
+        const isAnnual = currentCycle === "annual";
+        const discount = isAnnual ? pricingMatrix.annualDiscountMultiplier : 1.0;
+
+        // Calculate values dynamically
+        const starterCost = pricingMatrix.tiers.starter.baseUSD * region.rate * region.tariffMultiplier * discount;
+        const growthCost = pricingMatrix.tiers.growth.baseUSD * region.rate * region.tariffMultiplier * discount;
+        const enterpriseCost = pricingMatrix.tiers.enterprise.baseUSD * region.rate * region.tariffMultiplier * discount;
+
+        // Isolated update to price text nodes (no parent component re-render)
+        priceStarter.textContent = region.symbol + Math.round(starterCost);
+        priceGrowth.textContent = region.symbol + Math.round(growthCost);
+        priceEnterprise.textContent = region.symbol + Math.round(enterpriseCost);
+
+        const periodLabel = isAnnual ? " / yr" : " / mo";
+        periodStarter.textContent = periodLabel;
+        periodGrowth.textContent = periodLabel;
+        periodEnterprise.textContent = periodLabel;
+
+        const subtextLabel = isAnnual ? "billed annually" : "billed monthly";
+        subtextStarter.textContent = subtextLabel;
+        subtextGrowth.textContent = subtextLabel;
+        subtextEnterprise.textContent = subtextLabel;
+      }
+
+      btnMonthly.addEventListener("click", () => {
+        if (currentCycle !== "monthly") {
+          currentCycle = "monthly";
+          btnMonthly.classList.add("active");
+          btnAnnual.classList.remove("active");
+          updatePrices();
+        }
+      });
+
+      btnAnnual.addEventListener("click", () => {
+        if (currentCycle !== "annual") {
+          currentCycle = "annual";
+          btnAnnual.classList.add("active");
+          btnMonthly.classList.remove("active");
+          updatePrices();
+        }
+      });
+
+      currencySelect.addEventListener("change", (e) => {
+        currentCurrency = e.target.value;
+        updatePrices();
+      });
+
+      // Initial Pricing update
+      updatePrices();
+
+      /* ==========================================================================
+         NAVIGATION OVERLAY TOGGLE
+         ========================================================================== */
+      const hamburger = document.getElementById("hamburger-menu");
+      const menuOverlay = document.getElementById("menu-overlay");
+      const menuLinks = document.querySelectorAll(".menu-link a");
+
+      function toggleMenu() {
+        const isOpen = menuOverlay.classList.contains("open");
+        if (isOpen) {
+          menuOverlay.classList.remove("open");
+          hamburger.classList.remove("open");
+          menuOverlay.setAttribute("aria-hidden", "true");
+        } else {
+          menuOverlay.classList.add("open");
+          hamburger.classList.add("open");
+          menuOverlay.setAttribute("aria-hidden", "false");
+        }
+      }
+
+      hamburger.addEventListener("click", toggleMenu);
+
+      menuLinks.forEach(link => {
+        link.addEventListener("click", () => {
+          if (menuOverlay.classList.contains("open")) {
+            toggleMenu();
+          }
+        });
+      });
+
+
+      /* ==========================================================================
+         1. HERO: Background video is handled by the <video> element in HTML
+         ========================================================================== */
+
+
+      /* ==========================================================================
+         2. VIDEO SECTION: Background video is handled by the <video> element in HTML
+         ========================================================================== */
+
+
+      /* ==========================================================================
+         3. PLAY VIDEO: Modal & HTML5 Video Player
+         ========================================================================== */
+      const playBtn = document.getElementById("play-video-btn");
+      const videoModal = document.getElementById("video-modal");
+      const modalClose = document.getElementById("modal-close-btn");
+      const videoPlayer = document.getElementById("modal-video-player");
+
+      playBtn.addEventListener("click", () => {
+        videoModal.classList.add("open");
+        videoModal.setAttribute("aria-hidden", "false");
+        videoPlayer.play().catch(err => {
+          console.log("Autoplay blocked: ", err);
+        });
+      });
+
+      function closeModal() {
+        videoModal.classList.remove("open");
+        videoModal.setAttribute("aria-hidden", "true");
+        videoPlayer.pause();
+        videoPlayer.currentTime = 0;
+      }
+
+      modalClose.addEventListener("click", closeModal);
+      videoModal.addEventListener("click", (e) => {
+        if (e.target === videoModal) closeModal();
+      });
+
+
+      /* ==========================================================================
+         4. WORKFLOW SECTION: Auto-Pulse Simulation & SVG Connections
+         ========================================================================== */
+      const node1 = document.getElementById("node-1");
+      const node2 = document.getElementById("node-2");
+      const node3 = document.getElementById("node-3");
+      const node4 = document.getElementById("node-4");
+      const node5 = document.getElementById("node-5");
+      const branchGroup = document.getElementById("branching-group");
+      
+      const path12 = document.getElementById("path-1-2");
+      const path23 = document.getElementById("path-2-3");
+      const path34 = document.getElementById("path-3-4");
+      const path35 = document.getElementById("path-3-5");
+
+      const dbCanvas = document.getElementById("db-canvas-area");
+
+      // Calculate path vectors relative to parent canvas
+      function updateFlowLines() {
+        const offset = dbCanvas.getBoundingClientRect();
+        
+        function getRightSocket(el) {
+          const r = el.getBoundingClientRect();
+          return {
+            x: r.right - offset.left,
+            y: r.top - offset.top + r.height / 2
+          };
+        }
+
+        function getLeftSocket(el) {
+          const r = el.getBoundingClientRect();
+          return {
+            x: r.left - offset.left,
+            y: r.top - offset.top + r.height / 2
+          };
+        }
+
+        const p1R = getRightSocket(node1);
+        const p2L = getLeftSocket(node2);
+        const p2R = getRightSocket(node2);
+        const p3L = getLeftSocket(node3);
+        const p3R = getRightSocket(node3);
+
+        const p4L = getLeftSocket(node4);
+        const p5L = getLeftSocket(node5);
+
+        // Simple bezier/curved cubic path drawing
+        function drawBezier(start, end) {
+          const controlOffset = Math.abs(end.x - start.x) * 0.4;
+          return `M ${start.x} ${start.y} C ${start.x + controlOffset} ${start.y}, ${end.x - controlOffset} ${end.y}, ${end.x} ${end.y}`;
+        }
+
+        path12.setAttribute("d", drawBezier(p1R, p2L));
+        path23.setAttribute("d", drawBezier(p2R, p3L));
+        path34.setAttribute("d", drawBezier(p3R, p4L));
+        path35.setAttribute("d", drawBezier(p3R, p5L));
+      }
+
+      window.addEventListener("load", updateFlowLines);
+      window.addEventListener("resize", updateFlowLines);
+
+      // Node Loop Animation logic
+      const nodes = [node1, node2, node3, [node4, node5]];
+      const lines = [
+        [path12],
+        [path23],
+        [path34, path35]
+      ];
+      let activeIndex = 0;
+
+      function runAutoPulseCycle() {
+        // Clear all active classes
+        node1.classList.remove("active");
+        node2.classList.remove("active");
+        node3.classList.remove("active");
+        node4.classList.remove("active");
+        node5.classList.remove("active");
+        branchGroup.classList.remove("active");
+
+        path12.classList.remove("active");
+        path23.classList.remove("active");
+        path34.classList.remove("active");
+        path35.classList.remove("active");
+
+        // Activate step
+        if (activeIndex === 0) {
+          node1.classList.add("active");
+        } else if (activeIndex === 1) {
+          node2.classList.add("active");
+          path12.classList.add("active");
+        } else if (activeIndex === 2) {
+          node3.classList.add("active");
+          path23.classList.add("active");
+        } else if (activeIndex === 3) {
+          node4.classList.add("active");
+          node5.classList.add("active");
+          branchGroup.classList.add("active");
+          path34.classList.add("active");
+          path35.classList.add("active");
+        }
+
+        // Loop forward
+        activeIndex = (activeIndex + 1) % 4;
+      }
+
+      // Initial run
+      runAutoPulseCycle();
+      let cycleTimer = setInterval(runAutoPulseCycle, 2000);
+
+      // Simulation trigger buttons
+      const simBtn = document.getElementById("db-simulate-btn");
+      const resetBtn = document.getElementById("db-reset-btn");
+
+      simBtn.addEventListener("click", () => {
+        clearInterval(cycleTimer);
+        activeIndex = 0;
+        runAutoPulseCycle();
+        cycleTimer = setInterval(runAutoPulseCycle, 2000);
+        simBtn.textContent = "SIMULATING...";
+      });
+
+      resetBtn.addEventListener("click", () => {
+        clearInterval(cycleTimer);
+        node1.classList.remove("active");
+        node2.classList.remove("active");
+        node3.classList.remove("active");
+        node4.classList.remove("active");
+        node5.classList.remove("active");
+        branchGroup.classList.remove("active");
+
+        path12.classList.remove("active");
+        path23.classList.remove("active");
+        path34.classList.remove("active");
+        path35.classList.remove("active");
+        simBtn.textContent = "SIMULATE WORKFLOW";
+      });
+
+
+      /* ==========================================================================
+         5. BUILT FOR LONG TERM: Animated 3D Dot-Wave
+         ========================================================================== */
+      const ltCanvas = document.getElementById("longterm-canvas");
+      const ctxLt = ltCanvas.getContext("2d");
+
+      let ltWidth = ltCanvas.width = ltCanvas.offsetWidth;
+      let ltHeight = ltCanvas.height = ltCanvas.offsetHeight;
+
+      window.addEventListener("resize", () => {
+        ltWidth = ltCanvas.width = ltCanvas.offsetWidth;
+        ltHeight = ltCanvas.height = ltCanvas.offsetHeight;
+      });
+
+      // 3D waves coordinates
+      const wavePointsX = 26;
+      const wavePointsZ = 26;
+      const waveSpacing = 28;
+      let waveTime = 0;
+
+      function drawLongTermWave() {
+        ctxLt.fillStyle = "#0a0a0a";
+        ctxLt.fillRect(0, 0, ltWidth, ltHeight);
+
+        waveTime += 0.015;
+
+        const ltFov = 350;
+        const ltCamZ = 450;
+        const ltCamY = -120; // Look slightly downwards
+
+        // Center on screen
+        const cx = ltWidth / 2;
+        const cy = ltHeight / 2 + 30;
+
+        // Projection mapping helper
+        const projected = [];
+
+        for (let ix = 0; ix < wavePointsX; ix++) {
+          projected[ix] = [];
+          for (let iz = 0; iz < wavePointsZ; iz++) {
+            // Center the grid coordinates on 0,0
+            const x3d = (ix - wavePointsX / 2) * waveSpacing;
+            const z3d = (iz - wavePointsZ / 2) * waveSpacing;
+
+            // Generate waves using superimposed sine components
+            const dist = Math.sqrt(x3d * x3d + z3d * z3d) * 0.008;
+            const y3d = Math.sin(dist * 5 - waveTime * 2.5) * 45 + Math.cos(x3d * 0.006 + waveTime) * 15;
+
+            // Perspective math projection
+            const relativeZ = z3d + ltCamZ;
+            if (relativeZ <= 10) continue;
+
+            const scale = ltFov / relativeZ;
+            const screenX = cx + x3d * scale;
+            const screenY = cy + (y3d + ltCamY) * scale;
+
+            projected[ix][iz] = { x: screenX, y: screenY, z: relativeZ };
+          }
+        }
+
+        // Draw mesh grid lines for true wireframe aesthetic
+        ctxLt.strokeStyle = "rgba(255, 255, 255, 0.03)";
+        ctxLt.lineWidth = 1;
+
+        for (let ix = 0; ix < wavePointsX; ix++) {
+          for (let iz = 0; iz < wavePointsZ; iz++) {
+            const p1 = projected[ix][iz];
+            if (!p1) continue;
+
+            // Draw line to next column node
+            if (ix < wavePointsX - 1) {
+              const p2 = projected[ix + 1][iz];
+              if (p2) {
+                ctxLt.beginPath();
+                ctxLt.moveTo(p1.x, p1.y);
+                ctxLt.lineTo(p2.x, p2.y);
+                ctxLt.stroke();
+              }
+            }
+
+            // Draw line to next row node
+            if (iz < wavePointsZ - 1) {
+              const p3 = projected[ix][iz + 1];
+              if (p3) {
+                ctxLt.beginPath();
+                ctxLt.moveTo(p1.x, p1.y);
+                ctxLt.lineTo(p3.x, p3.y);
+                ctxLt.stroke();
+              }
+            }
+
+            // Draw dots at intersections
+            const depthFade = Math.pow(1 - (p1.z - 150) / 700, 2);
+            ctxLt.fillStyle = `rgba(255, 255, 255, ${depthFade * 0.55})`;
+            ctxLt.beginPath();
+            ctxLt.arc(p1.x, p1.y, 1.5, 0, Math.PI * 2);
+            ctxLt.fill();
+          }
+        }
+
+        requestAnimationFrame(drawLongTermWave);
+      }
+
+      drawLongTermWave();
+
+
+      /* ==========================================================================
+         6. STATS SECTION: Scroll-Triggered Count Up
+         ========================================================================== */
+      const statNumbers = document.querySelectorAll(".stat-number");
+      
+      const countOptions = {
+        threshold: 0.5,
+        rootMargin: "0px"
+      };
+
+      const statObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const el = entry.target;
+            const target = parseInt(el.getAttribute("data-target"), 10);
+            animateCountUp(el, target);
+            observer.unobserve(el);
+          }
+        });
+      }, countOptions);
+
+      statNumbers.forEach(num => {
+        statObserver.observe(num);
+      });
+
+      function animateCountUp(element, target) {
+        let count = 0;
+        const duration = 1500; // Total count up milliseconds
+        const frameRate = 1000 / 60; // 60 FPS
+        const totalFrames = Math.round(duration / frameRate);
+        const increment = target / totalFrames;
+
+        function updateCount(frame) {
+          count += increment;
+          if (frame >= totalFrames) {
+            // Complete count up correctly with original labels
+            if (target === 200) element.textContent = "200+";
+            else if (target === 98) element.textContent = "98%";
+            else if (target === 10) element.textContent = "10+";
+          } else {
+            element.textContent = Math.floor(count) + (target === 98 ? "%" : "+");
+            requestAnimationFrame(() => updateCount(frame + 1));
+          }
+        }
+
+        updateCount(0);
+      }
+
+      /* ==========================================================================
+         7. SCROLL ANIMATIONS OBSERVER
+         ========================================================================== */
+      const scrollElements = document.querySelectorAll('.animate-on-scroll');
+      
+      const scrollObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, {
+        threshold: 0.15,
+        rootMargin: "0px 0px -50px 0px"
+      });
+
+      scrollElements.forEach(el => scrollObserver.observe(el));
+
+    });
+  </script>
+</body>
+</html>
